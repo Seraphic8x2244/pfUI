@@ -301,6 +301,16 @@ pfUI:RegisterModule("equipmentmanager", function()
       pfUI.equipmentmanager.Refresh()
     end)
 
+    -- Drag a set onto an action bar. PickupEquipmentSet is newer than
+    -- the rest of C_EquipmentSet, so dragging stays inert on ClassicAPI
+    -- builds that don't ship it yet.
+    if C_EquipmentSet.PickupEquipmentSet then
+      row:RegisterForDrag("LeftButton")
+      row:SetScript("OnDragStart", function()
+        if row.setID then C_EquipmentSet.PickupEquipmentSet(row.setID) end
+      end)
+    end
+
     -- Show the gear and tooltip while the cursor is over the row or its
     -- gear child. The gear sits inside the row's rectangle, so a single
     -- MouseIsOver(row) check covers both. OnLeave on the row and the gear
